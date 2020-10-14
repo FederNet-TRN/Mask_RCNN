@@ -1,11 +1,12 @@
 numpy
-scipy==1.2.2
+scipy>=1.2.2
 Pillow
 cython
 matplotlib
-scikit-image
-tensorflow>=2.0.0
+scikit-image==0.16.2
+#tensorflow-gpu>=2.0.0 via anaconda cloud
 opencv-python
 h5py
 imgaug
+keras
 IPython[all]
