@@ -2262,12 +2262,15 @@ class MaskRCNN(object):
         # Directory for training logs
         self.log_dir = os.path.join(self.model_dir, "{}{:%Y%m%dT%H%M}".format(
             self.config.NAME.lower(), now))
-
+# OVERRIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIDEEEEEEEEEEEEEEEEEEEEEEEE
         # Path to save after each epoch. Include placeholders that get filled by Keras.
-        self.checkpoint_path = os.path.join(self.log_dir, "mask_rcnn_{}_*epoch*.h5".format(
+        #self.checkpoint_path = os.path.join(self.log_dir, "mask_rcnn_{}_*epoch*.h5".format(
+        #    self.config.NAME.lower()))
+        #self.checkpoint_path = self.checkpoint_path.replace(
+        #    "*epoch*", "{epoch:04d}")
+# OVERIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIDEEEEEEEEEEEEEEEEEEEEE (SAVING ONLY BEST)
+        self.checkpoint_path = os.path.join(self.log_dir, "mask_rcnn_{}.h5".format(
             self.config.NAME.lower()))
-        self.checkpoint_path = self.checkpoint_path.replace(
-            "*epoch*", "{epoch:04d}")
 
     def train(self, train_dataset, val_dataset, learning_rate, epochs, layers,
               augmentation=None, custom_callbacks=None, no_augmentation_sources=None):
@@ -2333,7 +2336,11 @@ class MaskRCNN(object):
             keras.callbacks.TensorBoard(log_dir=self.log_dir,
                                         histogram_freq=0, write_graph=True, write_images=False),
             keras.callbacks.ModelCheckpoint(self.checkpoint_path,
-                                            verbose=0, save_weights_only=True),
+                                            monitor='val_loss',
+                                            verbose=0,
+                                            save_best_only=True,
+                                            save_freq='epoch',
+                                            save_weights_only=True),
         ]
 
         # Add custom callbacks to the list
